@@ -1,0 +1,25 @@
+addpath('MEXfunc');
+
+% Testing Ru Huang's matrix using aggregation based multigrid
+filename1 = 'ru_ag.csv';
+filename2 = 'ru_ac.csv';
+Ag = csvread(filename1);
+Ac = csvread(filename2);
+disp(size(Ag))
+disp(size(Ac))
+Ag = sparse(Ag(2:3970, 2:3970));
+Ac = sparse(Ac(2:3970, 2:3970));
+%%
+ng = length(Ag);
+bg = rand(ng,1);
+% disp(n)
+[xg,ag_setup_info,ag_res] = SolveLinearSystem(Ag',bg);
+disp("relative error of Ag*xg=bg:")
+norm(Ag*xg-bg)/norm(bg)
+
+%%
+nc = length(Ac);
+bc = rand(nc,1);
+[xc,ac_setup_info,ac_res] = SolveLinearSystem(Ac',bc);
+disp("relative error of Ac*xc=bc:")
+norm(Ac*xc-bc)/norm(bc)
